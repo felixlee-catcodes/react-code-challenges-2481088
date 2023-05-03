@@ -26,8 +26,7 @@ export default function FormValidator() {
     e.preventDefault();
 
     const errors = findErrors();
-    setMessage(errors.length ? errors.join(",") : "Success!");
-    console.log(message);
+    setMessage(errors.length ? errors.join(", ") : "Success! User created");
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -54,7 +53,7 @@ export default function FormValidator() {
         name='password-confirm'
         onChange={(e) => setPasswordConfirm(e.target.value)}
       />
-      <p id='validation_msg'></p>
+      {message}
       <input type='submit' id='submit' value='Submit' />
     </form>
   );
