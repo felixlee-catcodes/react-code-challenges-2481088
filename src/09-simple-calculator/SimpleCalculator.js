@@ -1,33 +1,58 @@
-const initialState = {}
+import { useReducer } from "react";
 
-function reducer (state, action) {}
+const initialState = {
+  num1: 0,
+  num2: 0,
+  result: "no result yet",
+};
 
-export default function SimpleCalculator () {
-  const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+function reducer(state, action) {
+  if (action.type === "SET_NUM_1") return { ...state, num1: action.number };
+  if (action.type === "SET_NUM_2") return { ...state, num2: action.number };
+  if (action.type === "ADD")
+    return { ...state, result: state.num1 + state.num2 };
+  if (action.type === "SUBTRACT")
+    return { ...state, result: state.num1 - state.num2 };
+  if (action.type === "CLEAR") return initialState;
+}
+
+export default function SimpleCalculator() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   return (
     <div>
       <div>
         <h2>Number 1</h2>
-        {numbers.map(number => (
-          <button key={number}>
+        {numbers.map((number) => (
+          <button
+            key={number}
+            onClick={() => dispatch({ type: "SET_NUM_1", number })}
+          >
             {number}
-          </button>))}
+          </button>
+        ))}
       </div>
       <div>
         <h2>Number 2</h2>
-        {numbers.map(number => (
-          <button key={number}>
+        {numbers.map((number) => (
+          <button
+            key={number}
+            onClick={() => dispatch({ type: "SET_NUM_2", number })}
+          >
             {number}
-          </button>))}
+          </button>
+        ))}
       </div>
       <div>
         <h2>Actions</h2>
-        <button>+</button>
-        <button>-</button>
-        <button>c</button>
+        <button onClick={() => dispatch({ type: "ADD" })}>+</button>
+        <button onClick={() => dispatch({ type: "SUBTRACT" })}>-</button>
+        <button onClick={() => dispatch({ type: "CLEAR" })}>c</button>
       </div>
-      <div><h2>Result:</h2></div>
+      <div>
+        <h2>Result: {state.result}</h2>
+      </div>
     </div>
-  )
+  );
 }
